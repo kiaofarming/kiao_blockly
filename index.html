@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blockly Demo</title>
+    <meta charset="utf-8">
+    <script src="./blockly/node_modules/blockly/blockly.min.js"></script>
+    <script src="./blockly/node_modules/blockly/msg/zh-hant.js"></script>
+    <script>
+    </script>
+    <style>
+      /* CSS for the toolbox and workspace. */
+      #toolbox {
+        border: 0px solid gray;
+        height: 40px;
+        top: 2;
+	left: 5;
+        position: absolute;
+        width: 100%;
+      }
+      #workspace {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 43px;
+        width: 100%;
+      }
+	.button {
+	  background-color: #4CAF50; /* Green */
+	  border: none;
+	  color: white;
+	  padding: 15px 32px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+	}
+    /* Custom font for blockly */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    /* Main blockly style overrides */
+    .blocklySvg {
+      background-color: #f9f9f9;
+      font-family: 'Roboto', sans-serif;
+      user-select: none;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* Custom toolbox style */
+    .blocklyToolboxDiv {
+      background-color: #eeeeee;
+      border-right: 1px solid #dddddd;
+      overflow-x: visible;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    /* Custom category style */
+    .blocklyTreeRow {
+      height: 40px;
+    }
+    .blocklyTreeRowContent {
+      font-size: 16px;
+      font-weight: 500;
+      padding: 0 10px;
+    }
+    .blocklyTreeIconClosed, .blocklyTreeIconOpen {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Custom flyout style */
+    .blocklyFlyoutBackground {
+      fill: #eeeeee;
+    }
+
+    /* Custom scrollbar style */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #f5f5f5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #aaaaaa;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #999999;
+    }
+
+    </style>
+  </head>
+  <body>
+    <!-- Toolbox definition -->
+    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+      <category name="邏輯" colour="210">
+        <block type="controls_if"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_boolean"></block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+      </category>
+      <category name="迴圈" colour="#6da463">
+        <block type="controls_repeat_ext">
+          <value name="TIMES">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for">
+          <value name="FROM">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="TO">
+            <shadow type="math_number">
+              <field name="NUM">10</field>
+            </shadow>
+          </value>
+          <value name="BY">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="controls_flow_statements"></block>
+      </category>
+      <category name="運算" colour="230">
+        <block type="math_number"></block>
+        <block type="math_arithmetic">
+          <value name="A">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+          <value name="B">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="math_single">
+          <value name="NUM">
+            <shadow type="math_number">
+              <field name="NUM">9</field>
+            </shadow>
+          </value>
+        </block>
+      </category>
+      <category name="變數" colour="#A65C81" custom="VARIABLE">
+	 <block type="variables_get"></block>
+	 <block type="variables_set"></block>
+      </category>
+<category name="列表" colour="#745ba5">
+  <block type="lists_create_empty"></block>
+  <block type="lists_create_with"></block>
+  <block type="lists_repeat"></block>
+  <block type="lists_length"></block>
+  <block type="lists_isEmpty"></block>
+  <block type="lists_indexOf"></block>
+  <block type="lists_getIndex"></block>
+  <block type="lists_setIndex"></block>
+  <block type="lists_getSublist"></block>
+  <block type="lists_split"></block>
+  <block type="lists_sort"></block>
+</category>
+<category name="文字" colour="#5ba58c">
+  <block type="text"></block>
+  <block type="text_join"></block>
+  <block type="text_append"></block>
+  <block type="text_length"></block>
+  <block type="text_isEmpty"></block>
+  <block type="text_indexOf">
+    <value name="VALUE">
+      <block type="variables_get" id="variables_get">
+        <field name="VAR">字串</field>
+      </block>
+    </value>
+  </block>
+  <block type="text_charAt"></block>
+  <block type="text_getSubstring"></block>
+  <block type="text_changeCase"></block>
+  <block type="text_trim"></block>
+  <block type="text_print"></block>
+</category>
+<category name="農耕樂" colour="45">
+	<block type="field_area"></block>
+	<block type="equipment"></block>
+</category>
+    </xml>
+
+    <!-- Workspace -->
+    <div id="workspace"></div>
+
+    <!-- Code generation -->
+    <div id="toolbox">
+	<button onclick="generateCode()">Generate Code</button>
+	<button onclick="saveWorkspace()">儲存積木</button>
+	<button onclick="load()">載入積木程式</button>
+    </div>
+
+    <script>
+      // Initialize Blockly.
+
+	var zh_tw = {};
+	Blockly.Msg.zh_tw = zh_tw;
+
+	Blockly.Blocks['field_area'] = {
+	  init: function() {
+	    this.appendDummyInput()
+		.setAlign(Blockly.ALIGN_CENTRE)
+		.appendField("田區")
+		.appendField(new Blockly.FieldDropdown([["八甲田","OPTIONNAME"], ["智食",""], ["桃城",""]]), "NAME");
+	    this.setInputsInline(true);
+	    this.setOutput(true, "String");
+	    this.setColour(45);
+	 this.setTooltip("field_area");
+	 this.setHelpUrl("");
+	  }
+	};
+
+	Blockly.Blocks['equipment'] = {
+	  init: function() {
+	    this.appendDummyInput()
+		.setAlign(Blockly.ALIGN_CENTRE)
+		.appendField("設備")
+		.appendField(new Blockly.FieldDropdown([["馬達","OPTIONNAME"], ["風扇",""], ["捲簾器",""]]), "NAME");
+	    this.setInputsInline(true);
+	    this.setOutput(true, "String");
+	    this.setColour(45);
+	 this.setTooltip("equipment");
+	 this.setHelpUrl("");
+	  }
+	};
+
+	Blockly.JavaScript['equipment'] = function(block) {
+	  var dropdown_name = block.getFieldValue('NAME');
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = '...';
+	  // TODO: Change ORDER_NONE to the correct strength.
+	  return [code, Blockly.JavaScript.ORDER_NONE];
+	};
+
+	Blockly.JavaScript['field_area'] = function(block) {
+	  var dropdown_name = block.getFieldValue('NAME');
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = '...';
+	  // TODO: Change ORDER_NONE to the correct strength.
+	  return [code, Blockly.JavaScript.ORDER_NONE];
+	};
+
+
+      var workspace = Blockly.inject('workspace', {
+        toolbox: document.getElementById('toolbox')
+      });
+
+      // Generate JavaScript code.
+      function generateCode() {
+        var code = Blockly.JavaScript.workspaceToCode(workspace);
+//        document.getElementById('code').textContent = code;
+	console.log(code);
+      }
+        function saveWorkspace() {
+            var xml = Blockly.Xml.workspaceToDom(workspace);
+            var xmlText = Blockly.Xml.domToPrettyText(xml);
+            localStorage.setItem('myWorkspace', xmlText);
+            alert('積木已儲存');
+            console.log(xmlText);
+        }
+        var xmlText = localStorage.getItem('myWorkspace');
+        if (xmlText) {
+            var xml = Blockly.Xml.textToDom(xmlText);
+            Blockly.Xml.domToWorkspace(xml, workspace);
+        }
+        function load() {
+            var xmlText = localStorage.getItem('myWorkspace');
+            var xml = Blockly.Xml.textToDom(xmlText);
+            Blockly.Xml.domToWorkspace(xml, workspace);
+        }
+   </script>
+  </body>
+</html>
+
