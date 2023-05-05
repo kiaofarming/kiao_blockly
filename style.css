@@ -11,6 +11,12 @@
         height: 100%;
     }
 
+   #toolbox{
+	margin: 0 auto;
+        height: 30px;
+	
+   }
+
       #blocklyDiv {
 	position: absolute;
       }

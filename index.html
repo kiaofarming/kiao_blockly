@@ -3,13 +3,18 @@
 <head>
     <meta charset="utf-8">
     <title>農耕樂-行程積木</title>
-    <script src="./node_modules/blockly/blockly_compressed.js"></script>
-    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/blockly.min.js"></script>
     <script src="./node_modules/blockly/msg/zh-hant.js"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div id="toolbox">
+	<button onclick="generateCode()" class="button">Generate Code</button>
+	<button onclick="saveWorkspace()"class="button">儲存積木</button>
+	<button onclick="load()" class="button">載入積木程式</button>
+    </div>
     <div id="blocklyArea"></div>
     <div id="blocklyDiv"></div>
     <script src="default_blockly.js"></script>
