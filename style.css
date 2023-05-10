@@ -11,7 +11,7 @@ body {
     height: 100%;
 }
 
-#toolbox {
+#buttonbox {
     position: fixed;
     margin: 0 auto;
     top: 8px;
