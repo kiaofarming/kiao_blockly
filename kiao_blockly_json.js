@@ -46,7 +46,7 @@ var toolbox_kiao  = {
             }]
         };
 
-toolbox.contents.push(toolbox_kiao);
+toolbox.contents.unshift(toolbox_kiao);
 
 Blockly.Blocks['sensor_type'] = {
     init: function() {
@@ -115,7 +115,7 @@ Blockly.JavaScript['threshold'] = function(block) {
   var statements_uppser_run = Blockly.JavaScript.statementToCode(block, 'uppser_run');
   var statements_lower_run = Blockly.JavaScript.statementToCode(block, 'lower_run');
   // TODO: Assemble JavaScript into code variable.
-  var code = `if(getDeviceValue(${value_device},${value_type})>=${value_uppser_threshold}){\n\t${statements_uppser_run}\n} else if(getValue(${value_device},${value_type})<=${value_lower_threshold}){\n\t${statements_lower_run}\n}`;
+  var code = `if(getDeviceValue(${value_device},${value_type}) >= ${value_uppser_threshold}){\n${statements_uppser_run}\n} else if(getValue(${value_device},${value_type}) <= ${value_lower_threshold}){\n${statements_lower_run}\n}`;
   return code;
 };
 

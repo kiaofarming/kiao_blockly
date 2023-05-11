@@ -15,7 +15,7 @@ body {
     position: fixed;
     margin: 0 auto;
     top: 8px;
-    left: calc(100% - 293px);
+    left: calc(100% - 260px);
 }
 
 #blocklyDiv {
