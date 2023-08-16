@@ -66,16 +66,31 @@ function saveWorkspace() {
 	const serializer = new Blockly.serialization.blocks.BlockSerializer();
 	const state = serializer.save(workspace);
 	const strJSON = JSON.stringify(state);
-		
+
 	localStorage.setItem('myWorkspace', strJSON);
-//	save("blockly.json",strJSON);
+
+
+    const variable = new Blockly.serialization.variables.VariableSerializer();
+	const vState = variable.save(workspace);
+	const varJSON = JSON.stringify(vState);
+
+	localStorage.setItem('myVariable', varJSON);
 }
 
 function loadWorkspace() {
+	const varJSON = localStorage.getItem('myVariable');
+
+	if(varJSON !== null && varJSON !== 'null') {
+        const variable = new Blockly.serialization.variables.VariableSerializer();
+		const vState = JSON.parse(varJSON);
+
+		variable.load(vState, workspace);
+	}
+
 	const strJSON = localStorage.getItem('myWorkspace');
 
 	if(strJSON !== null && strJSON !== 'null') {
-	        const serializer = new Blockly.serialization.blocks.BlockSerializer();
+	    const serializer = new Blockly.serialization.blocks.BlockSerializer();
 		const state = JSON.parse(strJSON);
 
 		serializer.load(state, workspace);
