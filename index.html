@@ -5,6 +5,7 @@
     <title>農耕樂-行程積木</title>
     <script src="./node_modules/blockly/blockly.min.js"></script>
     <script src="./node_modules/blockly/msg/zh-hant.js"></script>
+    <script type="text/javascript" src="./node_modules/default-passive-events/dist/index.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,9 +19,11 @@
 	<button onclick="loadWorkspace()" type="file" class="button">載入</button>
 	<button onclick="cleanWorkspace()" class="button">清空</button>
 	<button onclick="generateCode()" class="button">Generate Code</button>
-    	<script src="./default_blockly_json.js"></script>
-    	<script src="./kiao_blockly_json.js"></script>
-    	<script src="./blockly.js"></script>
+        <script src="./default_blockly.js"></script>
+        <script src="./object_blockly.js"></script>
+        <script src="./time_blockly.js"></script>
+        <script src="./kiao_blockly.js"></script>
+        <script src="./function.js"></script>
     </div>
 </body>
 </html>

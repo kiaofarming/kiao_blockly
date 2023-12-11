@@ -21,12 +21,12 @@ const startTask = async (filename,ms) => {
 	}	
 };
 
+
 async function onload() {
 
 	var scripts = [
-		'default_blockly.js',
-		'json_blockly.js',
-		'kiao_blockly.js',
+		'default_blockly_json.js',
+		'kiao_blockly_json.js',
 		'blockly.js'];
 
 	if (typeof jQuery != 'undefined') {
