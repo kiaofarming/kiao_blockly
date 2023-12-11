@@ -11,24 +11,108 @@ var toolbox_time = {
     }, {
         "kind": "block",
         "type": "date_plus_days",
+        "inputs": {
+            "DATE": {
+                "shadow": {
+                    "type": "set_date",
+                }
+            },
+            "DAYS": {
+                "shadow": {
+                    "type": "math_number",
+                    "fields": {
+                        "NUM": 0
+                    }
+                }
+            }
+        }
     }, {
         "kind": "block",
         "type": "date_minus_days",
+        "inputs": {
+            "DATE": {
+                "shadow": {
+                    "type": "set_date",
+                }
+            },
+            "DAYS": {
+                "shadow": {
+                    "type": "math_number",
+                    "fields": {
+                        "NUM": 0
+                    }
+                }
+            }
+        }
     }, {
         "kind": "block",
         "type": "date_difference",
+        "inputs": {
+            "DATE1": {
+                "shadow": {
+                    "type": "get_date",
+                }
+            },
+            "DATE2": {
+                "shadow": {
+                    "type": "set_date",
+                }
+            }
+        }
     }, {
         "kind": "block",
         "type": "get_date",
     }, {
         "kind": "block",
         "type": "time_plus_sec",
+        "inputs": {
+            "TIME": {
+                "shadow": {
+                    "type": "set_time",
+                }
+            },
+            "SEC": {
+                "shadow": {
+                    "type": "math_number",
+                    "fields": {
+                        "NUM": 0
+                    }
+                }
+            }
+        }
     }, {
         "kind": "block",
         "type": "time_minus_sec",
+        "inputs": {
+            "TIME": {
+                "shadow": {
+                    "type": "set_time",
+                }
+            },
+            "SEC": {
+                "shadow": {
+                    "type": "math_number",
+                    "fields": {
+                        "NUM": 0
+                    }
+                }
+            }
+        }
     }, {
         "kind": "block",
         "type": "time_difference",
+        "inputs": {
+            "TIME1": {
+                "shadow": {
+                    "type": "get_time",
+                }
+            },
+            "TIME2": {
+                "shadow": {
+                    "type": "set_time",
+                }
+            }
+        }
    }, {
         "kind": "block",
         "type": "get_time",
@@ -68,6 +152,63 @@ var setTime_json = {
     }
   ],
   "inputsInline": true,
+  "output": "String",
+  "colour": 1,
+  "tooltip": "",
+  "helpUrl": ""
+}
+
+var date_plus_days_json = {
+  "type": "date_plus_days",
+  "message0": "日期 %1 加上 %2 天",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "DATE",
+    },{
+      "type": "input_value",
+      "name": "DAYS",
+    }
+  ],
+  "inputsInline": true,
+  "output": null,
+  "colour": 1,
+  "tooltip": "",
+  "helpUrl": ""
+}
+
+var date_minus_days_json = {
+  "type": "date_minus_days",
+  "message0": "日期 %1 減掉 %2 天",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "DATE",
+    },{
+      "type": "input_value",
+      "name": "DAYS",
+    }
+  ],
+  "inputsInline": true,
+  "output": null,
+  "colour": 1,
+  "tooltip": "",
+  "helpUrl": ""
+}
+
+var date_difference_json = {
+  "type": "date_difference",
+  "message0": "日期 %1 與 日期 %2 相差幾天",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "DATE1",
+    },{
+      "type": "input_value",
+      "name": "DATE2",
+    }
+  ],
+  "inputsInline": true,
   "output": null,
   "colour": 1,
   "tooltip": "",
@@ -99,6 +240,63 @@ var getTime_json = {
           "ss"
         ]
       ]
+    }
+  ],
+  "inputsInline": true,
+  "output": null,
+  "colour": 1,
+  "tooltip": "",
+  "helpUrl": ""
+}
+
+var time_plus_sec_json = {
+  "type": "time_plus_sec",
+  "message0": "時間  %1 加上 %2 秒",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "TIME",
+    },{
+      "type": "input_value",
+      "name": "SEC",
+    }
+  ],
+  "inputsInline": true,
+  "output": null,
+  "colour": 1,
+  "tooltip": "",
+  "helpUrl": ""
+}
+
+var time_minus_sec_json = {
+  "type": "time_minus_sec",
+  "message0": "時間 %1 減掉 %2 秒",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "TIME",
+    },{
+      "type": "input_value",
+      "name": "SEC",
+    }
+  ],
+  "inputsInline": true,
+  "output": null,
+  "colour": 1,
+  "tooltip": "",
+  "helpUrl": ""
+}
+
+var time_difference_json = {
+  "type": "time_difference",
+  "message0": "時間 %1 與 時間 %2 相差幾秒",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "TIME1",
+    },{
+      "type": "input_value",
+      "name": "TIME2",
     }
   ],
   "inputsInline": true,
@@ -165,7 +363,7 @@ Blockly.Blocks['set_date'] = {
       .appendField('月')
       .appendField(new Blockly.FieldDropdown(this.generateOptionsDD), 'DD')
       .appendField('日');
-    this.setOutput(true, null);
+    this.setOutput(true, "String");
     this.setColour(1);
     this.setFieldValue(getTime().substring(0, 4),'YYYY');
     this.setFieldValue(getTime().substring(5, 7),'MM');
@@ -190,12 +388,15 @@ Blockly.Blocks['set_date'] = {
 
   generateOptionsDD: function() {
      var block = this.getSourceBlock();
+     var days = 31;
+
      if(block != null ) {
-         console.log(block.getFieldValue('YYYY'));
-         console.log(block.getFieldValue('MM'));
+        const year = block.getFieldValue('YYYY');
+        const month = block.getFieldValue('MM');
+        days = new Date(year,month,0).getDate();
      }
 
-      return item(31,1);
+      return item(days,1);
   }
 };
 
@@ -246,30 +447,126 @@ Blockly.Blocks['get_date'] = {
     }
 };
 
-Blockly.JavaScript['set_date'] = function(block) {
+Blockly.Blocks['date_plus_days'] = {
+    init: function() {
+        this.jsonInit(date_plus_days_json);
+        var thisBlock = this;
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['date_minus_days'] = {
+    init: function() {
+        this.jsonInit(date_minus_days_json);
+        var thisBlock = this;
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['date_difference'] = {
+    init: function() {
+        this.jsonInit(date_difference_json);
+        var thisBlock = this;
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['time_plus_sec'] = {
+    init: function() {
+        this.jsonInit(time_plus_sec_json);
+        var thisBlock = this;
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['time_minus_sec'] = {
+    init: function() {
+        this.jsonInit(time_minus_sec_json);
+        var thisBlock = this;
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
+Blockly.Blocks['time_difference'] = {
+    init: function() {
+        this.jsonInit(time_difference_json);
+        var thisBlock = this;
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
+javascript.javascriptGenerator.forBlock['set_date'] = function(block, generator) {
   var dropdown_yy = block.getFieldValue('YYYY');
   var dropdown_mm = block.getFieldValue('MM');
   var dropdown_dd = block.getFieldValue('DD');
-  var code = `${dropdown_yy}-${dropdown_mm}-${dropdown_dd}`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  var code = `'${dropdown_yy}-${dropdown_mm}-${dropdown_dd}'`;
+  return [code, generator.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['set_time'] = function(block) {
+javascript.javascriptGenerator.forBlock['set_time'] = function(block, generator) {
   var dropdown_hh = block.getFieldValue('HH');
   var dropdown_mm = block.getFieldValue('MM');
   var dropdown_ss = block.getFieldValue('SS');
-  var code = `${dropdown_hh}:${dropdown_mm}:${dropdown_ss}`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  var code = `'${dropdown_hh}:${dropdown_mm}:${dropdown_ss}'`;
+  return [code, generator.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['get_time'] = function(block) {
+javascript.javascriptGenerator.forBlock['get_time'] = function(block, generator) {
   var dropdown_format = block.getFieldValue('FORMAT');
   var code = `moment().format('${dropdown_format}')`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['get_date'] = function(block) {
+javascript.javascriptGenerator.forBlock['get_date'] = function(block, generator) {
   var dropdown_format = block.getFieldValue('FORMAT');
   var code = `moment().format('${dropdown_format}')`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
+};
+
+javascript.javascriptGenerator.forBlock['date_plus_days'] = function(block, generator) {
+  const value_date = generator.valueToCode(block, 'DATE', generator.ORDER_ATOMIC);
+  const value_days = generator.valueToCode(block, 'DAYS', generator.ORDER_ATOMIC);
+  var code = `moment(${value_date}).add(${value_days}, 'd').format('YYYY-MM-DD')`;
+  return [code, generator.ORDER_ATOMIC];
+};
+
+javascript.javascriptGenerator.forBlock['date_minus_days'] = function(block, generator) {
+  const value_date = generator.valueToCode(block, 'DATE', generator.ORDER_ATOMIC);
+  const value_days = generator.valueToCode(block, 'DAYS', generator.ORDER_ATOMIC);
+  var code = `moment(${value_date}).subtract(${value_days}, 'd').format('YYYY-MM-DD')`;
+  return [code, generator.ORDER_ATOMIC];
+};
+
+javascript.javascriptGenerator.forBlock['date_difference'] = function(block, generator) {
+  const value_date1 = generator.valueToCode(block, 'DATE1', generator.ORDER_ATOMIC);
+  const value_date2 = generator.valueToCode(block, 'DATE2', generator.ORDER_ATOMIC);
+  var code = `moment(${value_date1}).diff(${value_date2}, 'd')`;
+  return [code, generator.ORDER_ATOMIC];
+};
+
+javascript.javascriptGenerator.forBlock['time_plus_sec'] = function(block, generator) {
+  const value_time = generator.valueToCode(block, 'TIME', generator.ORDER_ATOMIC);
+  const value_sec = generator.valueToCode(block, 'SEC', generator.ORDER_ATOMIC);
+  var code = `moment(${value_time}).add(${value_sec}, 's').format('HH:mm:ss')`;
+  return [code, generator.ORDER_ATOMIC];
+};
+
+javascript.javascriptGenerator.forBlock['time_minus_sec'] = function(block, generator) {
+  const value_time = generator.valueToCode(block, 'TIME', generator.ORDER_ATOMIC);
+  const value_sec = generator.valueToCode(block, 'SEC', generator.ORDER_ATOMIC);
+  var code = `moment(${value_time}).subtract(${value_sec}, 's').format('HH:mm:ss')`;
+  return [code, generator.ORDER_ATOMIC];
+};
+
+javascript.javascriptGenerator.forBlock['time_difference'] = function(block, generator) {
+  const value_time1 = generator.valueToCode(block, 'TIME1', generator.ORDER_ATOMIC);
+  const value_time2 = generator.valueToCode(block, 'TIME2', generator.ORDER_ATOMIC);
+  var code = `moment(${value_time1}).diff(${value_time2}, 's')`;
+  return [code, generator.ORDER_ATOMIC];
 };

@@ -79,7 +79,7 @@ var threshold_json = {
 
 var setClock_json = {
   "type": "setClock",
-  "message0": "開始日期 %1 ～ 結束日期 %2 週期天數 %3 %4 開始時間 %5 ～ 結束時間 %6 開始時 %7 結束時 %8 持續做 %9",
+  "message0": '開始日期 %1 ～ 結束日期 %2 週期天數 %3\n開始時間 %4 ～ 結束時間 %5 開始時 %6 結束時 %7 持續做 %8',
   "args0": [
     {
       "type": "input_value",
@@ -94,9 +94,6 @@ var setClock_json = {
       "name": "CYCLE_DAYS"
     },
     {
-      "type": "input_dummy"
-    },
-    {
       "type": "input_value",
       "name": "START_TIME"
     },
@@ -106,7 +103,7 @@ var setClock_json = {
     },
     {
       "type": "input_statement",
-      "name": "OND_START"
+      "name": "ON_START"
     },
     {
       "type": "input_statement",
@@ -177,27 +174,41 @@ Blockly.Blocks['setClock'] = {
     }
 };
 
-Blockly.JavaScript['device_key'] = function(block) {
+javascript.javascriptGenerator.forBlock['device_key'] = function(block, generator) {
   var dropdown_device_key = block.getFieldValue('DEVICE_KEY');
   var code = `'${dropdown_device_key}'`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['sensor_type'] = function(block) {
+javascript.javascriptGenerator.forBlock['sensor_type'] = function(block, generator) {
   var dropdown_sensor_type = block.getFieldValue('SENSOR_TYPE');
   var code = `'${dropdown_sensor_type}'`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['threshold'] = function(block) {
-  var value_device = Blockly.JavaScript.valueToCode(block, 'device_key', Blockly.JavaScript.ORDER_ATOMIC);
-  var value_type = Blockly.JavaScript.valueToCode(block, 'type', Blockly.JavaScript.ORDER_ATOMIC);
-  var value_uppser_threshold = Blockly.JavaScript.valueToCode(block, 'uppser_threshold', Blockly.JavaScript.ORDER_ATOMIC);
-  var value_lower_threshold = Blockly.JavaScript.valueToCode(block, 'lower_threshold', Blockly.JavaScript.ORDER_ATOMIC);
-  var statements_uppser_run = Blockly.JavaScript.statementToCode(block, 'uppser_run');
-  var statements_lower_run = Blockly.JavaScript.statementToCode(block, 'lower_run');
+javascript.javascriptGenerator.forBlock['threshold'] = function(block, generator) {
+  var value_device = generator.valueToCode(block, 'device_key', generator.ORDER_ATOMIC);
+  var value_type = generator.valueToCode(block, 'type', generator.ORDER_ATOMIC);
+  var value_uppser_threshold = generator.valueToCode(block, 'uppser_threshold', generator.ORDER_ATOMIC);
+  var value_lower_threshold = generator.valueToCode(block, 'lower_threshold', generator.ORDER_ATOMIC);
+  var statements_uppser_run = generator.statementToCode(block, 'uppser_run');
+  var statements_lower_run = generator.statementToCode(block, 'lower_run');
   // TODO: Assemble JavaScript into code variable.
   var code = `if(getDeviceValue(${value_device},${value_type}) >= ${value_uppser_threshold}){\n${statements_uppser_run}\n} else if(getDeviceValue(${value_device},${value_type}) <= ${value_lower_threshold}){\n${statements_lower_run}\n}`;
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock['setClock'] = function(block, generator) {
+  var value_begin_date = generator.valueToCode(block, 'BEGIN_DATE', generator.ORDER_ATOMIC);
+  var value_over_date = generator.valueToCode(block, 'OVER_DATE', generator.ORDER_ATOMIC);
+  var value_cycle_days = generator.valueToCode(block, 'CYCLE_DAYS', generator.ORDER_ATOMIC);
+  var value_start_time = generator.valueToCode(block, 'START_TIME', generator.ORDER_ATOMIC);
+  var value_end_time = generator.valueToCode(block, 'END_TIME', generator.ORDER_ATOMIC);
+  var statements_start_run = generator.statementToCode(block, 'ON_START');
+  var statements_end_run = generator.statementToCode(block, 'ON_END');
+  var statements_loop_run = generator.statementToCode(block, 'ON_LOOP');
+  // TODO: Assemble JavaScript into code variable.
+  var code = ``;
   return code;
 };
 

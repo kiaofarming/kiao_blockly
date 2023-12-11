@@ -265,7 +265,7 @@ Blockly.Blocks['text_lf'] = {
     }
 };
 
-Blockly.JavaScript['text_lf'] = function(block) {
+javascript.javascriptGenerator.forBlock['text_lf'] = function(block, generator) {
   var code = "'\\n'";
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
 };

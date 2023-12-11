@@ -14,7 +14,9 @@ var toolbox_obj  = {
         "type": "getObjectValue",
         "inputs": {
             "OBJECT": {
-                "type": "variables_get",
+                "shadow": {
+                    "type": "variables_get",
+                }
             },
             "MEMBER": {
                 "shadow": {
@@ -94,10 +96,9 @@ var objectValue_json ={
     "args0": [
         {
             "type": "input_value",
-//            "type": "field_variable",
             "name": "OBJECT",
-            "text": "物件",
-            "variable": "物件",
+            "variable": "object",
+            "check": "object"
         },
         {
             "type": "input_value",
@@ -197,35 +198,35 @@ Blockly.Blocks['getObjectValue'] = {
     }
 };
 
-Blockly.JavaScript['object'] = function(block) {
-    var object_members = Blockly.JavaScript.statementToCode(block, 'MEMBERS');
+javascript.javascriptGenerator.forBlock['object'] = function(block, generator) {
+    var object_members = generator.statementToCode(block, 'MEMBERS');
     const code = `{\n${object_members}}`;
-    return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, generator.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['member'] = function(block) {
+javascript.javascriptGenerator.forBlock['member'] = function(block, generator) {
   const object_key = block.getFieldValue('KEY');
-  const object_value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC);
+  const object_value = generator.valueToCode(block, 'VALUE', generator.ORDER_ATOMIC);
   const code = `${object_key}: ${object_value},\n`;
   return code;
 };
 
-Blockly.JavaScript['json2obj'] = function(block) {
-  const value_json = Blockly.JavaScript.valueToCode(block, 'JSON', Blockly.JavaScript.ORDER_ATOMIC);
+javascript.javascriptGenerator.forBlock['json2obj'] = function(block, generator) {
+  const value_json = generator.valueToCode(block, 'JSON', generator.ORDER_ATOMIC);
   var code = `JSON.parse(${value_json})`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['obj2json'] = function(block) {
-  const value_object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC);
+javascript.javascriptGenerator.forBlock['obj2json'] = function(block, generator) {
+  const value_object = generator.valueToCode(block, 'OBJECT', generator.ORDER_ATOMIC);
   var code = `JSON.stringify(${value_object})`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
 };
 
 
-Blockly.JavaScript['getObjectValue'] = function(block) {
-  const value_object = Blockly.JavaScript.valueToCode(block, 'OBJECT', Blockly.JavaScript.ORDER_ATOMIC);
-  const value_member = Blockly.JavaScript.valueToCode(block, 'MEMBER', Blockly.JavaScript.ORDER_ATOMIC);
+javascript.javascriptGenerator.forBlock['getObjectValue'] = function(block, generator) {
+  const value_object = generator.valueToCode(block, 'OBJECT', generator.ORDER_ATOMIC);
+  const value_member = generator.valueToCode(block, 'MEMBER', generator.ORDER_ATOMIC);
   var code = `${value_object}[${value_member}]`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, generator.ORDER_ATOMIC];
 };
