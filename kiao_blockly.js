@@ -36,6 +36,36 @@ var toolbox_kiao  = {
     }, {
         "kind": "block",
         "type": "setClock",
+        "inputs": {
+            "BEGIN_DATE": {
+                "shadow": {
+                    "type": "set_date",
+                }
+            },
+            "OVER_DATE": {
+                "shadow": {
+                    "type": "set_date",
+                }
+            },
+            "CYCLE_DAYS": {
+                "shadow": {
+                    "type": "math_number",
+                    "fields": {
+                        "NUM": 1
+                    }
+                }
+            },
+            "START_TIME": {
+                "shadow": {
+                    "type": "set_time",
+                }
+            },
+            "END_TIME": {
+                "shadow": {
+                    "type": "set_time",
+                }
+            },
+        }
     }, {
         "kind": "block",
         "type": "sensor_type",
@@ -207,8 +237,15 @@ javascript.javascriptGenerator.forBlock['setClock'] = function(block, generator)
   var statements_start_run = generator.statementToCode(block, 'ON_START');
   var statements_end_run = generator.statementToCode(block, 'ON_END');
   var statements_loop_run = generator.statementToCode(block, 'ON_LOOP');
+/*
+  var mBlocks = Blockly.mainWorkspace.getUsedBlocks();
+  for (var i = 0; i < blocks.length; i++) {
+    var mBlock = mBlocks[i];
+    console.log(mBlock);
+  }
+*/
   // TODO: Assemble JavaScript into code variable.
-  var code = ``;
+  var code = `\nkiaoClock(\n{\n\tbegin_date: ${value_begin_date},\n\tover_date: ${value_over_date},\n\tcycle_days: ${value_cycle_days},\n\tstart_time: ${value_start_time},\n\tend_time: ${value_end_time}\n},\n() => {\n${statements_start_run}},\n() => (\n${statements_end_run}),\nasync (inTime) => {\n${statements_loop_run}},\n() => {\n\t_taskOverCallback();\n});\n`;
   return code;
 };
 
