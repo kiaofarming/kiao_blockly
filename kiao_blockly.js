@@ -247,77 +247,106 @@ var setClock_json = {
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
+  "output": "string",
   "colour": 230,
   "tooltip": "",
   "helpUrl": ""
 };
 
-
-Blockly.Blocks['switch_status'] = {
-   init: function() {
-         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([
+var switch_status_json = {
+    "type": "switch_status",
+    "message0" : '%1',
+    "args0" : [
+        {
+            "type": "field_dropdown",
+            "name": "SWITCH_STATUS",
+            "options": [
                 ["啟動", "true"],
                 ["關閉", "false"],
-            ]), "SWITCH_STATUS");
-        this.setOutput(true, null);
-        this.setColour(160);
+            ]
+        }
+    ],
+    "output": true,
+    "colour": 130
+}
+
+var device_rank_json = {
+    "type": "device_rank",
+    "message0" : '%1 %2 %3',
+    "args0" : [
+        {
+            "type": "field_dropdown",
+            "name": "zone",
+            "options": function() {
+                var options = [['龜房','0'],['陽台','1']];
+                return options;
+            }
+        },{
+            "type": "field_dropdown",
+            "name": "device",
+            "options": function() {
+                let options = [
+                        [['燈控','85'],['溫控','73']],
+                        [['環境','86'],['澆水','77']]
+                    ];
+
+                let block = this.getSourceBlock();
+                let zoneId = 0;
+
+                if(block != null ) {
+                    zoneId = parseInt(block.getFieldValue('zone'));
+                    zoneField = block.getField('zone');
+                }
+
+                return options[zoneId];
+            }
+        },{
+            "type": "field_dropdown",
+            "name": "rank",
+            "options": function() {
+                let options = [];
+
+                let block = this.getSourceBlock();
+                options[85] = [['UV燈','1'],['保溫燈','2']];
+                options[73] = [['冷氣','1'],['風扇','2']];
+                options[86] = [['溫度','1'],['濕度','2'],['光度','3'],['土讓濕度','4']];
+                options[77] = [['多肉','1'],['香草','2']];
+
+                let deviceId = 85;
+                if(block != null ) {
+                    deviceId = parseInt(block.getFieldValue('device'));
+                }
+
+                return options[deviceId];
+            }
+        }
+    ],
+    "inputsInline": true,
+    "output": "String",
+    "colour": 1,
+    "tooltip": "",
+    "helpUrl": ""
+}
+
+toolbox.contents.unshift(toolbox_kiao);
+
+Blockly.Blocks['device_rank'] = {
+    init: function() {
+        this.jsonInit(device_rank_json);
+        let thisBlock = this;
         this.setTooltip("");
         this.setHelpUrl("");
     }
 };
 
-Blockly.Blocks['device_rank'] = {
-
+Blockly.Blocks['switch_status'] = {
     init: function() {
-        let input = this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown(this.generateOptionsZones), 'zone')
-            .appendField(new Blockly.FieldDropdown(this.generateOptionsDevices), 'device')
-            .appendField(new Blockly.FieldDropdown(this.generateOptionsRank), 'rank');
-        this.setOutput(true, "String");
-        this.setColour(1);
-    },
-    
-    generateOptionsZones: function() {
-        var options = [['龜房','0'],['陽台','1']];
-        return options;
-    },
-
-    generateOptionsDevices: function() {
-        let options = [
-                [['燈控','85'],['溫控','73']],
-                [['環境','86'],['澆水','77']]
-            ];
-
-        let block = this.getSourceBlock();
-        let zoneId = 0;
-
-        if(block != null ) {
-            zoneId = parseInt(block.getFieldValue('zone'));
-        }
-
-        return options[zoneId];
-    },
-
-    generateOptionsRank: function() {
-        let options = [];
-
-        let block = this.getSourceBlock();
-        options[85] = [['UV燈','1'],['保溫燈','2']];
-        options[73] = [['冷氣','1'],['風扇','2']];
-        options[86] = [['溫度','1'],['濕度','2'],['光度','3'],['土讓濕度','4']];
-        options[77] = [['多肉','1'],['香草','2']];
-
-        let deviceId = 85;
-        if(block != null ) {
-            deviceId = parseInt(block.getFieldValue('device'));
-        }
-
-        return options[deviceId];
+        this.jsonInit(switch_status_json);
+        let thisBlock = this;
+        this.setTooltip("");
+        this.setHelpUrl("");
     }
 };
-
-toolbox.contents.unshift(toolbox_kiao);
 
 Blockly.Blocks['controller'] = {
     init: function() {
@@ -380,9 +409,9 @@ javascript.javascriptGenerator.forBlock['device_rank'] = function(block, generat
   return [code, generator.ORDER_ATOMIC];
 };
 
-javascript.javascriptGenerator.forBlock['device_key'] = function(block, generator) {
-  let dropdown_device_key = block.getFieldValue('DEVICE_KEY');
-  let code = `'${dropdown_device_key}'`;
+javascript.javascriptGenerator.forBlock['getDeviceId'] = function(block, generator) {
+  let value_device_ssid = generator.valueToCode(block, 'SSID', generator.ORDER_ATOMIC);
+  let code = `getDeviceId(${value_device_ssid})`;
   return [code, generator.ORDER_ATOMIC];
 };
 
